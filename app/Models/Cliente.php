@@ -15,4 +15,9 @@ class Cliente extends Model
         'telefone',
         'dataNascimento',
     ];
+
+    public function vendas()
+    {
+        return $this->hasMany(Venda::class);
+    }
 }

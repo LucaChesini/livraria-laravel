@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\LivrosController;
+use App\Http\Controllers\VendasController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,3 +35,7 @@ Route::get('/clientes/busca', [ClientesController::class, 'buscaClientes']);
 
 Route::get('/livros', [LivrosController::class, 'show']);
 Route::get('/livros/busca', [LivrosController::class, 'buscaLivro']);
+
+Route::get('/vendas', [VendasController::class, 'show']);
+Route::get('/vendas/busca', [VendasController::class, 'buscaVenda']);
+Route::post('/vendas', [VendasController::class, 'store']);
