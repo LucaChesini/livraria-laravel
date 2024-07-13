@@ -27,4 +27,11 @@ class ClientesController extends Controller
 
         return response()->json(['cliente' => $cliente]);
     }
+
+    public function buscaClientes(Request $request)
+    {
+        $clientes = $this->clientesService->buscaClientes($request);
+
+        return response()->json(['clientes' => $clientes]);
+    }
 }

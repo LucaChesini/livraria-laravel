@@ -29,3 +29,4 @@ Route::get('/csrf-token', function () {
 
 Route::get('/clientes', [ClientesController::class, 'show']);
 Route::post('/clientes', [ClientesController::class, 'store']);
+Route::get('/clientes/busca', [ClientesController::class, 'buscaClientes']);
