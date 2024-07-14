@@ -29,9 +29,9 @@ Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
 
-Route::get('/clientes', [ClientesController::class, 'show']);
+Route::get('/clientes', [ClientesController::class, 'show'])->name('api.clientes.index');
 Route::post('/clientes', [ClientesController::class, 'store']);
-Route::get('/clientes/busca', [ClientesController::class, 'buscaClientes']);
+Route::get('/clientes/busca', [ClientesController::class, 'buscaClientes'])->name('api.clientes.busca');
 
 Route::get('/livros', [LivrosController::class, 'show']);
 Route::get('/livros/busca', [LivrosController::class, 'buscaLivro']);
