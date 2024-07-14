@@ -31,10 +31,10 @@ Clientes
                     $.each(response.clientes, function(index, cliente) {
                         $('#lista').append(`
                             <li class="list-group-item d-flex align-items-center">
-                                <div class="w-50">${cliente.nome}</div>
+                                <div class="w-50 fs-4">${cliente.nome}</div>
                                 <div class="flex-grow-1">
-                                    <div class="text-center">CPF: ${cliente.cpf}</div>
-                                    <div class="text-center">Fone: ${cliente.telefone}</div>
+                                    <div class="text-center"><span class="text-secondary">CPF: </span>${cliente.cpf}</div>
+                                    <div class="text-center"><span class="text-secondary">Fone: </span>${cliente.telefone}</div>
                                 </div>
                                 <div><button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button></div>
                             </li>
@@ -58,10 +58,10 @@ Clientes
                     $.each(response.clientes, function(index, cliente) {
                         $('#lista').append(`
                             <li class="list-group-item d-flex align-items-center">
-                                <div class="w-50">${cliente.nome}</div>
+                                <div class="w-50 fs-4">${cliente.nome}</div>
                                 <div class="flex-grow-1">
-                                    <div class="text-center">${cliente.cpf}</div>
-                                    <div class="text-center">${cliente.telefone}</div>
+                                    <div class="text-center"><span class="text-secondary">CPF: </span>${cliente.cpf}</div>
+                                    <div class="text-center"><span class="text-secondary">Fone: </span>${cliente.telefone}</div>
                                 </div>
                                 <div><button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button></div>
                             </li>

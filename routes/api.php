@@ -33,9 +33,9 @@ Route::get('/clientes', [ClientesController::class, 'show'])->name('api.clientes
 Route::post('/clientes', [ClientesController::class, 'store'])->name('api.clientes.store');
 Route::get('/clientes/busca', [ClientesController::class, 'buscaClientes'])->name('api.clientes.busca');
 
-Route::get('/livros', [LivrosController::class, 'show']);
-Route::get('/livros/busca', [LivrosController::class, 'buscaLivro']);
+Route::get('/livros', [LivrosController::class, 'show'])->name('api.livros.index');
+Route::get('/livros/busca', [LivrosController::class, 'buscaLivro'])->name('api.livros.busca');
 
-Route::get('/vendas', [VendasController::class, 'show']);
-Route::get('/vendas/busca', [VendasController::class, 'buscaVenda']);
-Route::post('/vendas', [VendasController::class, 'store']);
+Route::get('/vendas', [VendasController::class, 'show'])->name('api.vendas.index');
+Route::post('/vendas', [VendasController::class, 'store'])->name('api.vendas.store');
+Route::get('/vendas/busca', [VendasController::class, 'buscaVenda'])->name('api.vendas.busca');

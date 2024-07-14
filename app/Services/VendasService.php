@@ -11,7 +11,7 @@ class VendasService
 {
     public function show()
     {
-        $vendas = Venda::with('livros')->get();
+        $vendas = Venda::with('livros')->with('cliente')->get();
 
         return $vendas;
     }
@@ -20,10 +20,10 @@ class VendasService
     {
         $venda = Venda::where(function ($query) use ($request) {
             $query->whereHas('cliente', function ($q) use ($request) {
-                $q->where('nome', 'like', '%' . $request->busca . '%');
+                $q->where('nome', 'like', '%' . $request->venda . '%');
             })
             ->orWhereHas('livros', function ($q) use ($request) {
-                $q->where('nome', 'like', '%' . $request->busca . '%');
+                $q->where('nome', 'like', '%' . $request->venda . '%');
             });
         })
         ->with(['cliente', 'livros'])

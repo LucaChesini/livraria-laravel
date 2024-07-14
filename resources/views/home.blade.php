@@ -18,7 +18,7 @@ Inicial
             <div class='card-body'>
                 <h2 class='card-title'>Vendas</h2>
                 <p class='card-text'>Página de listagem de vendas</p>
-                <a href='#' class='btn btn-primary'>Acessar</a>
+                <a href='{{route('vendas.index')}}' class='btn btn-primary'>Acessar</a>
             </div>
         </div>
     </div>

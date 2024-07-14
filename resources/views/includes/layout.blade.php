@@ -21,7 +21,7 @@
                         <a class="nav-link" href="{{route('clientes.index')}}">Clientes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Vendas</a>
+                        <a class="nav-link" href="{{route('vendas.index')}}">Vendas</a>
                     </li>
                 </ul>
             </div>
