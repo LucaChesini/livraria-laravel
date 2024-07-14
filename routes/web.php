@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('/clientes', function () {
     return view('clientes.list');
 })->name('clientes.index');
+
+Route::get('/clientes/criar', function () {
+    return view('clientes.create');
+})->name('clientes.create');

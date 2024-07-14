@@ -5,9 +5,7 @@ Inicial
 @endsection
 
 @section('content')
-    <div>
-        <h1>Inicio</h1>
-    </div>
+    <h1 class="my-3">Inicio</h1>
     <div class='d-flex justify-content-evenly'>
         <div class='card' style='width: 18rem;'>
             <div class='card-body'>

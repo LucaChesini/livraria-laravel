@@ -4,24 +4,17 @@ Clientes
 @endsection
 
 @section('content')
+    <h1 class="my-3">Listagem de Clientes</h1>
     <div class="d-flex mt-3">
         <form id="form-busca" class="d-flex flex-grow-1" role="search">
             @csrf
             <input id="string-busca" class="form-control me-2 flex-grow-1" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
             <button id="buscar" class="btn btn-outline-success" type="submit">Buscar</button>
         </form>
-        <a href="#" class="btn btn-info ms-3">Adicionar Cliente</a>
+        <a href='{{route("clientes.create")}}' class="btn btn-info ms-3">Adicionar Cliente</a>
     </div>
     <div class="mt-5">
-        <ul id='lista' class="list-group">
-            {{-- <li class="list-group-item d-flex align-items-center">
-                <div class="w-50">Nome</div>
-                <div class="flex-grow-1">
-                    <div class='text-center'>CPF</div>
-                    <div class='text-center'>Telefone</div>
-                </div>
-                <div>Ações</div>
-            </li> --}}
+        <ul id='lista' class="list-group" style="max-height: 70vh;overflow: auto;">
         </ul>
     </div>
 
@@ -34,16 +27,16 @@ Clientes
             $.ajax({
                 url: '{{ route("api.clientes.index") }}',
                 method: 'GET',
-                success: function(clientes) {
-                    $.each(clientes.clientes, function(index, cliente) {
+                success: function(response) {
+                    $.each(response.clientes, function(index, cliente) {
                         $('#lista').append(`
                             <li class="list-group-item d-flex align-items-center">
                                 <div class="w-50">${cliente.nome}</div>
                                 <div class="flex-grow-1">
-                                    <div class="text-center">${cliente.cpf}</div>
-                                    <div class="text-center">${cliente.telefone}</div>
+                                    <div class="text-center">CPF: ${cliente.cpf}</div>
+                                    <div class="text-center">Fone: ${cliente.telefone}</div>
                                 </div>
-                                <div>Ações</div>
+                                <div><button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button></div>
                             </li>
                         `);
                     });
@@ -60,9 +53,9 @@ Clientes
                 url: '{{ route("api.clientes.busca") }}',
                 method: 'GET',
                 data: { cliente: query },
-                success: function(clientes) {
+                success: function(response) {
                     $('#lista').empty();
-                    $.each(clientes.clientes, function(index, cliente) {
+                    $.each(response.clientes, function(index, cliente) {
                         $('#lista').append(`
                             <li class="list-group-item d-flex align-items-center">
                                 <div class="w-50">${cliente.nome}</div>
@@ -70,7 +63,7 @@ Clientes
                                     <div class="text-center">${cliente.cpf}</div>
                                     <div class="text-center">${cliente.telefone}</div>
                                 </div>
-                                <div>Ações</div>
+                                <div><button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button></div>
                             </li>
                         `);
                     });

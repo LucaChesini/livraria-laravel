@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Cliente;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ClientesService
 {
@@ -17,7 +18,7 @@ class ClientesService
 
     public function store(Request $request)
     {
-        $data = Carbon::createFromFormat('d/m/Y', $request->dataNascimento);
+        $data = Carbon::createFromFormat('Y-m-d', $request->dataNascimento);
 
         $cliente = new Cliente([
             'nome' => $request->nome,
