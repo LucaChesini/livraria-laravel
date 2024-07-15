@@ -18,7 +18,7 @@ class LivrosService
     public function buscaLivro(Request $request)
     {
         $livro = Livro::find($request->livro);
-
+        
         return $livro;
     }
 }

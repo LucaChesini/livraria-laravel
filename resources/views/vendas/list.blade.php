@@ -11,7 +11,7 @@ Vendas
             <input id="string-busca" class="form-control me-2 flex-grow-1" type="search" placeholder="Pesquisar" aria-label="Pesquisar">
             <button id="buscar" class="btn btn-outline-success" type="submit">Buscar</button>
         </form>
-        <a href='#' class="btn btn-info ms-3">Adicionar Venda</a>
+        <a href='{{route("vendas.create")}}' class="btn btn-info ms-3">Adicionar Venda</a>
     </div>
     <div class="mt-5">
         <ul id='lista' class="list-group" style="max-height: 70vh;overflow: auto;"></ul>
