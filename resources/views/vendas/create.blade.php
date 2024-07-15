@@ -9,12 +9,12 @@
         @csrf
         <div class="col-6">
             <label for="dataInclusao" class="form-label">Data de inclusão:</label>
-            <input type="text" class="form-control" id="dataInclusao" name="dataInclusao">
+            <input type="text" class="form-control" id="dataInclusao" name="dataInclusao" readonly>
             <span class="text-danger" id="dataInclusao-error"></span>
         </div>
         <div class="col-6">
             <label for="nf" class="form-label">NF:</label>
-            <input type="text" class="form-control" id="nf" name="nf">
+            <input type="text" class="form-control" id="nf" name="nf" readonly>
             <span class="text-danger" id="nf-error"></span>
         </div>
         <!-- Clientes -->
@@ -60,12 +60,12 @@
                     <div class="col-6">
                         <label for="nf" class="form-label">Nome do cliente:</label>
                         <input type="text" class="form-control" id="nome" name="nome"
-                            placeholder="Nome do Cliente">
+                            placeholder="Nome do Cliente" readonly>
                     </div>
                     <div class="col-6">
                         <label for="cpf" class="form-label">Cliente - CPF</label>
                         <input type="text" class="form-control" id="cpf" name="cpf"
-                            placeholder="CPF do Cliente">
+                            placeholder="CPF do Cliente" readonly>
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                 <div class="row mt-2">
                     <div class="col-md-6">
                         <label for="produto" class="form-label">Produto:</label>
-                        <input type="text" class="form-control" id="produto" name="produto">
+                        <input type="text" class="form-control" id="produto" name="produto" readonly>
                     </div>
                     <div class="col-md-2">
                         <label for="quantidade" class="form-label">Quantidade:</label>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="valor_unitario" class="form-label">Valor Unitário:</label>
-                        <input type="text" class="form-control" id="valor_unitario" name="valor_unitario">
+                        <input type="text" class="form-control" id="valor_unitario" name="valor_unitario" readonly>
                     </div>
                 </div>
                 <div class="modal fade" id="modal-livros" tabindex="-1" role="dialog"
@@ -165,6 +165,19 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            var today = new Date();
+            var day = String(today.getDate()).padStart(2, '0');
+            var month = String(today.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
+            var year = today.getFullYear();
+            var formattedDate = day + '/' + month + '/' + year;
+
+            $('#dataInclusao').val(formattedDate);
+
+            function gerarNumeroAleatorioNF() {
+                return Math.floor(100000 + Math.random() * 900000);
+            }
+            $('#nf').val(gerarNumeroAleatorioNF())
+
             $('#form-venda').submit(function(event) {
                 event.preventDefault();
                 $('.text-danger').html('');
@@ -317,7 +330,7 @@
                                     var livroJaSelecionado = false;
                                     $('#livros-selecionados tr').each(function() {
                                         if ($(this).find('td:first')
-                                        .text() == livro.id) {
+                                            .text() == livro.id) {
                                             livroJaSelecionado = true;
                                             return false;
                                         }
@@ -401,7 +414,7 @@
                                     var valorTotal = quantidade * valorUnitario;
                                     var livroRow = $('<tr>');
                                     livroRow.append($('<td>').text(livro
-                                    .descricao));
+                                        .descricao));
                                     livroRow.append($('<td>').text(quantidade));
                                     livroRow.append($('<td>').text(valorUnitario));
                                     var btnExcluir = $('<button>')
