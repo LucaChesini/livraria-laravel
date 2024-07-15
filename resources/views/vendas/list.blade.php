@@ -60,7 +60,6 @@ Vendas
                                         <div class="text-center fs-4">${venda.valor_total}</div>
                                     </div>
                                 </div>
-                                <div><button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button></div>
                             </li>
                         `);
                     });
@@ -112,7 +111,6 @@ Vendas
                                         <div class="text-center fs-4">${venda.valor_total}</div>
                                     </div>
                                 </div>
-                                <div><button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button></div>
                             </li>
                         `);
                     });
