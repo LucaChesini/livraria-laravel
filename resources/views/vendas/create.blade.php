@@ -88,7 +88,7 @@
                     </div>
                     <div class="col-md-2">
                         <label for="quantidade" class="form-label">Quantidade:</label>
-                        <input type="number" class="form-control" id="quantidade" name="quantidade">
+                        <input type="number" class="form-control" id="quantidade" name="quantidade" value="1">
                     </div>
                     <div class="col-md-4">
                         <label for="valor_unitario" class="form-label">Valor Unitário:</label>
@@ -254,7 +254,6 @@
                         var livros = response.livros;
                         var tabelaLivros = $('#tabela-livros');
                         tabelaLivros.empty();
-
                         $.each(livros, function(index, livro) {
                             var row = $('<tr>');
                             row.append($('<td>').text(livro.id));
@@ -269,31 +268,32 @@
                                 .text('Selecionar')
                                 .click(function(event) {
                                     event.preventDefault();
-
+                                    
                                     var livroJaSelecionado = false;
                                     $('#livros-selecionados tr').each(function() {
-                                        if ($(this).find('td:first').text() == livro.id) {
+                                        if ($(this).find('td:first')
+                                            .text() == livro.id) {
                                             livroJaSelecionado = true;
                                             return false;
                                         }
                                     });
-
                                     if (!livroJaSelecionado) {
                                         $('#produto').val(livro.descricao);
                                         $('#valor_unitario').val(livro.valor);
                                         var quantidade = $('#quantidade').val();
                                         var valorUnitario = livro.valor;
                                         var valorTotal = quantidade * valorUnitario;
-
                                         var livroRow = $('<tr>');
                                         livroRow.append($('<td>').text(livro
                                             .descricao));
                                         livroRow.append($('<td>').text(
-                                        quantidade));
+                                            quantidade));
                                         livroRow.append($('<td>').text(
                                             valorUnitario));
 
                                         $('#livros-selecionados').append(livroRow);
+
+                                        calcularValorTotal();
                                         $('#modal-livros').modal('hide');
                                     } else {
                                         alert('Este livro já foi selecionado.');
@@ -327,7 +327,7 @@
                         var livros = response.livros;
                         var tabelaLivros = $('#tabela-livros');
                         tabelaLivros.empty();
-
+                        
                         $.each(livros, function(index, livro) {
                             var row = $('<tr>');
                             row.append($('<td>').text(livro.id));
@@ -338,35 +338,7 @@
                             var btnSelecionar = $('<button>')
                                 .attr('id', 'btn-selecionar-' + livro.id)
                                 .addClass('btn btn-success btn-sm')
-                                .text('Selecionar')
-                                .click(function(event) {
-                                    event.preventDefault();
-
-                                    // Verificar se o livro já está na lista de livros selecionados
-                                    var livroJaSelecionado = false;
-                                    $('#livros-selecionados tr').each(function() {
-                                        if ($(this).find('td:first')
-                                            .text() == livro.id) {
-                                            livroJaSelecionado = true;
-                                            return false; // sair do loop each
-                                        }
-                                    });
-
-                                    if (!livroJaSelecionado) {
-                                        var livroRow = $('<tr>');
-                                        livroRow.append($('<td>').text(livro.id));
-                                        livroRow.append($('<td>').text(livro
-                                            .descricao));
-                                        livroRow.append($('<td>').text(livro
-                                            .numeroPaginas));
-                                        livroRow.append($('<td>').text(livro
-                                            .valor));
-                                        $('#livros-selecionados').append(livroRow);
-                                        $('#modal-livros').modal('hide');
-                                    } else {
-                                        alert('Este livro já foi selecionado.');
-                                    }
-                                });
+                                .text('Selecionar');
 
                             row.append($('<td>').append(btnSelecionar));
                             tabelaLivros.append(row);
@@ -378,14 +350,17 @@
                 });
             });
 
-            $('#quantidade').on('input', function() {
-                var quantidade = $(this).val();
-                var valorUnit = $('#valor_unitario').val();
+            function calcularValorTotal() {
+                var valorTotal = 0;
 
-                var valorTotal = quantidade * valorUnit;
-
-                $('#valorTotal').text(valorTotal.toFixed(2));
-            });
+                $('#livros-selecionados tr').each(function() {
+                    var quantidade = parseInt($(this).find('td:nth-child(2)').text());
+                    var valorUnitario = parseFloat($(this).find('td:nth-child(3)').text());
+                    var subtotal = quantidade * valorUnitario;
+                    valorTotal += subtotal;
+                });
+                $('#valorTotal').text('R$ ' + valorTotal.toFixed(2));
+            }
         });
     </script>
 @endsection
