@@ -5,16 +5,16 @@
 
 @section('content')
     <h1 class="my-3">Cadastro de Vendas</h1>
-    <form id="form-cliente" class="row g-3" method="POST">
+    <form id="form-venda" class="row g-3" method="POST">
         @csrf
         <div class="col-6">
             <label for="dataInclusao" class="form-label">Data de inclusão:</label>
-            <input type="text" class="form-control" id="dataInclusao" name="dataInclusao" disabled>
+            <input type="text" class="form-control" id="dataInclusao" name="dataInclusao">
             <span class="text-danger" id="dataInclusao-error"></span>
         </div>
         <div class="col-6">
             <label for="nf" class="form-label">NF:</label>
-            <input type="text" class="form-control" id="nf" name="nf" disabled>
+            <input type="text" class="form-control" id="nf" name="nf">
             <span class="text-danger" id="nf-error"></span>
         </div>
         <!-- Clientes -->
@@ -60,12 +60,12 @@
                     <div class="col-6">
                         <label for="nf" class="form-label">Nome do cliente:</label>
                         <input type="text" class="form-control" id="nome" name="nome"
-                            placeholder="Nome do Cliente" disabled>
+                            placeholder="Nome do Cliente">
                     </div>
                     <div class="col-6">
                         <label for="cpf" class="form-label">Cliente - CPF</label>
                         <input type="text" class="form-control" id="cpf" name="cpf"
-                            placeholder="CPF do Cliente" disabled>
+                            placeholder="CPF do Cliente">
                     </div>
                 </div>
             </div>
@@ -84,7 +84,7 @@
                 <div class="row mt-2">
                     <div class="col-md-6">
                         <label for="produto" class="form-label">Produto:</label>
-                        <input type="text" class="form-control" id="produto" name="produto" disabled>
+                        <input type="text" class="form-control" id="produto" name="produto">
                     </div>
                     <div class="col-md-2">
                         <label for="quantidade" class="form-label">Quantidade:</label>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="valor_unitario" class="form-label">Valor Unitário:</label>
-                        <input type="text" class="form-control" id="valor_unitario" name="valor_unitario" disabled>
+                        <input type="text" class="form-control" id="valor_unitario" name="valor_unitario">
                     </div>
                 </div>
                 <div class="modal fade" id="modal-livros" tabindex="-1" role="dialog"
@@ -141,6 +141,7 @@
                                     <th>Nome</th>
                                     <th>Quantidade</th>
                                     <th>Valor Unitário</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody id="livros-selecionados">
@@ -156,12 +157,56 @@
                 </div>
             </div>
         </div>
+        <div id="livros-selecionados-inputs"></div>
+        <input type="hidden" id="livros" name="livros">
     </form>
 @endsection
 
 @section('scripts')
     <script>
         $(document).ready(function() {
+            $('#form-venda').submit(function(event) {
+                event.preventDefault();
+                $('.text-danger').html('');
+
+                // Antes de enviar o formulário, converta os dados dos livros selecionados em JSON
+                var livrosSelecionados = [];
+                $('#livros-selecionados tr').each(function() {
+                    var livro = {
+                        descricao: $(this).find('td:nth-child(1)').text(),
+                        quantidade: $(this).find('td:nth-child(2)').text(),
+                        valor_unitario: $(this).find('td:nth-child(3)').text()
+                    };
+                    livrosSelecionados.push(livro);
+                });
+                $('#livros').val(JSON.stringify(livrosSelecionados));
+
+                $.ajax({
+                    url: '{{ route('api.vendas.store') }}',
+                    method: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $('#form-venda')[0].reset();
+                        $('#livros-selecionados').empty();
+                        calcularValorTotal();
+
+                        window.location.href = '/vendas';
+                    },
+                    error: function(response) {
+                        var errors = response.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            $('#' + key + '-error').html("");
+                            var lista = '<ul>';
+                            $.each(value, function(index, error) {
+                                lista += '<li>' + error + '</li>';
+                            });
+                            lista += '</ul>';
+                            $('#' + key + '-error').html(lista);
+                        });
+                    }
+                });
+            });
+
             $('#btn-selecionar-cliente').click(function() {
                 $('#modal-clientes').modal('show');
                 $.ajax({
@@ -268,11 +313,11 @@
                                 .text('Selecionar')
                                 .click(function(event) {
                                     event.preventDefault();
-                                    
+
                                     var livroJaSelecionado = false;
                                     $('#livros-selecionados tr').each(function() {
                                         if ($(this).find('td:first')
-                                            .text() == livro.id) {
+                                        .text() == livro.id) {
                                             livroJaSelecionado = true;
                                             return false;
                                         }
@@ -286,10 +331,18 @@
                                         var livroRow = $('<tr>');
                                         livroRow.append($('<td>').text(livro
                                             .descricao));
-                                        livroRow.append($('<td>').text(
-                                            quantidade));
+                                        livroRow.append($('<td>').text(quantidade));
                                         livroRow.append($('<td>').text(
                                             valorUnitario));
+                                        var btnExcluir = $('<button>')
+                                            .addClass('btn btn-danger btn-sm')
+                                            .html('<i class="bi bi-trash"></i>')
+                                            .click(function() {
+                                                livroRow.remove();
+                                                calcularValorTotal();
+                                            });
+                                        livroRow.append($('<td>').append(
+                                            btnExcluir));
 
                                         $('#livros-selecionados').append(livroRow);
 
@@ -327,7 +380,7 @@
                         var livros = response.livros;
                         var tabelaLivros = $('#tabela-livros');
                         tabelaLivros.empty();
-                        
+
                         $.each(livros, function(index, livro) {
                             var row = $('<tr>');
                             row.append($('<td>').text(livro.id));
@@ -338,7 +391,33 @@
                             var btnSelecionar = $('<button>')
                                 .attr('id', 'btn-selecionar-' + livro.id)
                                 .addClass('btn btn-success btn-sm')
-                                .text('Selecionar');
+                                .text('Selecionar')
+                                .click(function(event) {
+                                    event.preventDefault();
+                                    $('#produto').val(livro.descricao);
+                                    $('#valor_unitario').val(livro.valor);
+                                    var quantidade = $('#quantidade').val();
+                                    var valorUnitario = livro.valor;
+                                    var valorTotal = quantidade * valorUnitario;
+                                    var livroRow = $('<tr>');
+                                    livroRow.append($('<td>').text(livro
+                                    .descricao));
+                                    livroRow.append($('<td>').text(quantidade));
+                                    livroRow.append($('<td>').text(valorUnitario));
+                                    var btnExcluir = $('<button>')
+                                        .addClass('btn btn-danger btn-sm')
+                                        .html('<i class="bi bi-trash"></i>')
+                                        .click(function() {
+                                            livroRow.remove();
+                                            calcularValorTotal();
+                                        });
+                                    livroRow.append($('<td>').append(btnExcluir));
+
+                                    $('#livros-selecionados').append(livroRow);
+
+                                    calcularValorTotal();
+                                    $('#modal-livros').modal('hide');
+                                });
 
                             row.append($('<td>').append(btnSelecionar));
                             tabelaLivros.append(row);
