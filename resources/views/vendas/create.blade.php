@@ -61,11 +61,13 @@
                         <label for="nf" class="form-label">Nome do cliente:</label>
                         <input type="text" class="form-control" id="nome" name="nome"
                             placeholder="Nome do Cliente" readonly>
+                        <span class="text-danger" id="nome-error"></span>
                     </div>
                     <div class="col-6">
                         <label for="cpf" class="form-label">Cliente - CPF</label>
                         <input type="text" class="form-control" id="cpf" name="cpf"
                             placeholder="CPF do Cliente" readonly>
+                        <span class="text-danger" id="cpf-error"></span>
                     </div>
                 </div>
             </div>
@@ -85,6 +87,7 @@
                     <div class="col-md-6">
                         <label for="produto" class="form-label">Produto:</label>
                         <input type="text" class="form-control" id="produto" name="produto" readonly>
+                        <span class="text-danger" id="produto-error"></span>
                     </div>
                     <div class="col-md-2">
                         <label for="quantidade" class="form-label">Quantidade:</label>

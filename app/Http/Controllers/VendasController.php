@@ -8,6 +8,7 @@ use App\Models\Venda;
 use App\Models\VendaLivro;
 use App\Services\VendasService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class VendasController extends Controller
 {
@@ -34,6 +35,20 @@ class VendasController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            "nome" => "required",
+            "cpf" => "required",
+            "produto" => "required",
+        ],[
+            "nome.required" => "O campo nome deve ser preenchido",
+            "cpf.required" => "O campo cpf deve ser preenchido",
+            "produto.required" => "O campo produto deve ser preenchido",
+        ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         $livros = json_decode($request->livros, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
