@@ -179,13 +179,13 @@
             function gerarNumeroAleatorioNF() {
                 return Math.floor(100000 + Math.random() * 900000);
             }
+
             $('#nf').val(gerarNumeroAleatorioNF())
 
             $('#form-venda').submit(function(event) {
                 event.preventDefault();
                 $('.text-danger').html('');
 
-                // Antes de enviar o formulário, converta os dados dos livros selecionados em JSON
                 var livrosSelecionados = [];
                 $('#livros-selecionados tr').each(function() {
                     var livro = {
@@ -195,6 +195,7 @@
                     };
                     livrosSelecionados.push(livro);
                 });
+
                 $('#livros').val(JSON.stringify(livrosSelecionados));
 
                 $.ajax({
@@ -341,15 +342,18 @@
                                     if (!livroJaSelecionado) {
                                         $('#produto').val(livro.descricao);
                                         $('#valor_unitario').val(livro.valor);
+
                                         var quantidade = $('#quantidade').val();
                                         var valorUnitario = livro.valor;
                                         var valorTotal = quantidade * valorUnitario;
                                         var livroRow = $('<tr>');
+
                                         livroRow.append($('<td>').text(livro
                                             .descricao));
                                         livroRow.append($('<td>').text(quantidade));
                                         livroRow.append($('<td>').text(
                                             valorUnitario));
+
                                         var btnExcluir = $('<button>')
                                             .addClass('btn btn-danger btn-sm')
                                             .html('<i class="bi bi-trash"></i>')
@@ -393,17 +397,17 @@
                     },
                     dataType: 'json',
                     success: function(response) {
-                        var livros = response.livros;
+                        var livros = response.livro;
                         var tabelaLivros = $('#tabela-livros');
                         tabelaLivros.empty();
-
+                        
                         $.each(livros, function(index, livro) {
                             var row = $('<tr>');
                             row.append($('<td>').text(livro.id));
                             row.append($('<td>').text(livro.descricao));
                             row.append($('<td>').text(livro.numeroPaginas));
                             row.append($('<td>').text(livro.valor));
-
+                            
                             var btnSelecionar = $('<button>')
                                 .attr('id', 'btn-selecionar-' + livro.id)
                                 .addClass('btn btn-success btn-sm')
@@ -412,14 +416,16 @@
                                     event.preventDefault();
                                     $('#produto').val(livro.descricao);
                                     $('#valor_unitario').val(livro.valor);
+
                                     var quantidade = $('#quantidade').val();
                                     var valorUnitario = livro.valor;
                                     var valorTotal = quantidade * valorUnitario;
                                     var livroRow = $('<tr>');
-                                    livroRow.append($('<td>').text(livro
-                                        .descricao));
+
+                                    livroRow.append($('<td>').text(livro.descricao));
                                     livroRow.append($('<td>').text(quantidade));
                                     livroRow.append($('<td>').text(valorUnitario));
+
                                     var btnExcluir = $('<button>')
                                         .addClass('btn btn-danger btn-sm')
                                         .html('<i class="bi bi-trash"></i>')
@@ -427,6 +433,7 @@
                                             livroRow.remove();
                                             calcularValorTotal();
                                         });
+                                        
                                     livroRow.append($('<td>').append(btnExcluir));
 
                                     $('#livros-selecionados').append(livroRow);

@@ -19,6 +19,6 @@ class LivrosService
     {
         $livro = Livro::find($request->livro);
         
-        return $livro;
+        return ['livros' => $livro];
     }
 }

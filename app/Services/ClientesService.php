@@ -36,7 +36,7 @@ class ClientesService
     {
         $clientes = Cliente::where(function($query) use ($request){
             $query->where('nome', 'like', "%{$request->cliente}%")
-            ->orWhere('cpf', $request->cliente);
+            ->orWhere('cpf', 'like', "%{$request->cliente}%");
         })->get();
 
         return $clientes;
