@@ -24,15 +24,19 @@ class ClientesController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $data = $request->all();
+        $data['cpf'] = preg_replace("/[^0-9]/", "", $request->cpf);
+        $validator = Validator::make( $data, [
             "nome" => "required",
-            "cpf" => "required|unique:clientes,cpf",
+            "cpf" => "required|min:11|max:11|unique:clientes,cpf",
             "telefone" => "required",
             "dataNascimento" => "required"
 
         ],[
             "nome.required" => "O campo nome deve ser preenchido",
             "cpf.required" => "O campo cpf deve ser preenchido",
+            "cpf.min" => "O campo cpf deve possuir 11 dígitos",
+            "cpf.max" => "O campo cpf deve possuir 11 dígitos",
             "cpf.unique" => "Esse cpf já está cadastrado",
             "telefone.required" => "O campo telefone deve ser preenchido",
             "dataNascimento.required" => "O campo data de nascimento deve ser preenchido",
@@ -42,7 +46,7 @@ class ClientesController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $cliente = $this->clientesService->store($request);
+        $cliente = $this->clientesService->store($data);
 
         return response()->json(['cliente' => $cliente]);
     }

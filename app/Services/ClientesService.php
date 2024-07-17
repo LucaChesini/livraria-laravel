@@ -16,15 +16,15 @@ class ClientesService
         return $clientes;
     }
 
-    public function store(Request $request)
+    public function store(array $data)
     {
-        $data = Carbon::createFromFormat('Y-m-d', $request->dataNascimento);
+        $dataNascimento = Carbon::createFromFormat('Y-m-d', $data['dataNascimento']);
 
         $cliente = new Cliente([
-            'nome' => $request->nome,
-            'cpf' => $request->cpf,
-            'telefone' => $request->telefone,
-            'dataNascimento' => $data->format('Y-m-d'),
+            'nome' => $data['nome'],
+            'cpf' => $data['cpf'],
+            'telefone' => $data['telefone'],
+            'dataNascimento' => $dataNascimento->format('Y-m-d'),
         ]);
 
         $cliente->save();

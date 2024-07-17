@@ -47,6 +47,7 @@ Clientes
                 data: $(this).serialize(),
                 success: function(response) {
                     $('#form-cliente')[0].reset();
+                    window.location.href = "{{ route('clientes.index')}}";
                 },
                 error: function(response) {
                     var errors = response.responseJSON.errors;
