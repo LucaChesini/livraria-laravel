@@ -16,6 +16,13 @@ class ClientesService
         return $clientes;
     }
 
+    public function showEspecifico($id)
+    {
+        $clientes = Cliente::find($id);
+
+        return $clientes;
+    }
+
     public function store(array $data)
     {
         $dataNascimento = Carbon::createFromFormat('Y-m-d', $data['dataNascimento']);
@@ -26,6 +33,22 @@ class ClientesService
             'telefone' => $data['telefone'],
             'dataNascimento' => $dataNascimento->format('Y-m-d'),
         ]);
+
+        $cliente->save();
+
+        return $cliente;
+    }
+
+    public function update(array $data, $id)
+    {
+        $dataNascimento = Carbon::createFromFormat('Y-m-d', $data['dataNascimento']);
+
+        $cliente = Cliente::find($id);
+
+        $cliente->nome = $data['nome'];
+        $cliente->cpf = $data['cpf'];
+        $cliente->telefone = $data['telefone'];
+        $cliente->dataNascimento = $dataNascimento->format('Y-m-d');
 
         $cliente->save();
 

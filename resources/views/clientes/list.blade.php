@@ -36,7 +36,11 @@ Clientes
                                     <div class="text-center"><span class="text-secondary">CPF: </span>${cliente.cpf}</div>
                                     <div class="text-center"><span class="text-secondary">Fone: </span>${cliente.telefone}</div>
                                 </div>
-                                <div><button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button></div>
+                                <div>
+                                    <a href="clientes/${cliente.id}/editar" class="btn btn-primary mx-1">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                </div>
                             </li>
                         `);
                     });
@@ -63,7 +67,11 @@ Clientes
                                     <div class="text-center"><span class="text-secondary">CPF: </span>${cliente.cpf}</div>
                                     <div class="text-center"><span class="text-secondary">Fone: </span>${cliente.telefone}</div>
                                 </div>
-                                <div><button class="btn btn-danger"><i class="bi bi-trash-fill"></i></button></div>
+                                <div>
+                                    <a href="clientes/${cliente.id}/editar" class="btn btn-primary mx-1">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                </div>
                             </li>
                         `);
                     });

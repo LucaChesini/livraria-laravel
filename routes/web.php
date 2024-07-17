@@ -25,6 +25,10 @@ Route::get('/clientes/criar', function () {
     return view('clientes.create');
 })->name('clientes.create');
 
+Route::get('/clientes/{id}/editar', function ($id) {
+    return view('clientes.edit', ['id' => $id]);
+})->name('clientes.edit');
+
 Route::get('/vendas', function () {
     return view('vendas.list');
 })->name('vendas.index');
